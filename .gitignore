@@ -1,0 +1,29 @@
+# Môi trường ảo
+venv/
+env/
+
+# Cache và file biên dịch
+__pycache__/
+*.py[cod]
+
+# File log và tạm
+*.log
+*.tmp
+
+# File môi trường
+.env
+.env.*
+
+# File cấu hình hệ thống / IDE
+.vscode/
+.idea/
+*.swp
+
+# Thư mục build / dist
+build/
+dist/
+*.egg-info/
+
+# Tập tin dữ liệu hoặc backup
+*.bak
+*.old
