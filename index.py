@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from src.api.products.products_route import router as product_router
+from src.api.categories.categories_route import router as categories_router
 from fastapi.responses import JSONResponse
 
 app = FastAPI()
@@ -15,6 +16,7 @@ def get_root():
 
 # Gắn router
 app.include_router(product_router)
+app.include_router(categories_router)
 
 if __name__ == "__main__":
     import uvicorn
