@@ -2,7 +2,7 @@ from src.api.products.products_service import ProductsService
 from fastapi import HTTPException
 from fastapi.responses import JSONResponse
 from src.dto.product_dto import ProductResponseDTO, ProductCreateDTO, Product
-
+from src.model.categories_model import Categories_model
 class ProductsController():
     def get_all_products(self,page: int ):
         try:
@@ -62,6 +62,15 @@ class ProductsController():
                     },
                     status_code=400
                 )
+            
+            categories_model = Categories_model()
+            if not categories_model.get_category_byID(product.CategoryID):
+                return JSONResponse(
+                    content={
+                        "message": "Category not found",
+                    },
+                    status_code= 404
+                )
 
             product_id = product_sv.create_product(product)
             if product_id:
@@ -97,6 +106,15 @@ class ProductsController():
                 return JSONResponse(
                     content={"message": "Product not found"},
                     status_code=404
+                )
+            
+            categories_model = Categories_model()
+            if not categories_model.get_category_byID(product.CategoryID):
+                return JSONResponse(
+                    content={
+                        "message": "Category not found",
+                    },
+                    status_code= 404
                 )
             check_newName =  (old_product.ProductName != product.ProductName)
             # Update

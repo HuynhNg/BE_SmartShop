@@ -106,7 +106,7 @@ class Products_model():
                 OUTPUT INSERTED.ProductID, INSERTED.ProductName
                 VALUES (?, ?, ?, ?)
             """
-            cursor.execute(query, (Product.ProductName, Product.Price, Product.CategoryID, int(Product.isActive)))
+            cursor.execute(query, (Product.ProductName, Product.Price, Product.CategoryID, 1))
             row = cursor.fetchone()
             new_id = row.ProductID
             product_name_snapshot = row.ProductName
