@@ -1,10 +1,10 @@
 from pydantic import BaseModel
 
-class InventoryDTO:
+class InventoryDTO(BaseModel):
     ProductID: int
     Quantity: int
 
-class InventoryLogDTO:
+class InventoryLogDTO(BaseModel):
     ProductID: int
     Quantity: int
     UserID: int

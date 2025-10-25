@@ -1,5 +1,6 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from src.dto.product_dto import ProductCreateDTO, Product
+from src.middlewares.verify_middleware import admin_verify
 from src.api.products.products_controller import ProductsController
 
 router = APIRouter(prefix="/products", tags=["Products"])
@@ -14,14 +15,14 @@ def get_all_products(page: int = 1):
 def get_product_byID(id: int):
     return products_ctl.get_product_byID(id)
 
-@router.post("/create")
+@router.post("/create", dependencies=[Depends(admin_verify)])
 def create_product(Product: ProductCreateDTO):
     return products_ctl.create_product(Product)
 
-@router.put("/update")
+@router.put("/update", dependencies=[Depends(admin_verify)])
 def update_product(product: Product):
     return products_ctl.update_product(product)
 
-@router.delete("/delete/{id}")
+@router.delete("/delete/{id}", dependencies=[Depends(admin_verify)])
 def delete_product(id: int):
     return products_ctl.delete_product(id)

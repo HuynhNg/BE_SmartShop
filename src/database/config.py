@@ -19,7 +19,7 @@ def get_connection():
     )
     try:
         conn = pyodbc.connect(conn_str)
-        print("Database connection established.")
+        # print("Database connection established.")
         return conn
     except Exception as e:
         print(f"Error connecting to database: {e}")

@@ -1,6 +1,7 @@
-from fastapi import APIRouter
+from fastapi import APIRouter,  Depends
 from src.api.categories.categories_controller import CategoriesController
 from src.dto.category_dto import CategoryCreateDTO
+from src.middlewares.verify_middleware import admin_verify
 
 router = APIRouter(prefix="/categories", tags=["Categories"])
 categories_ctl = CategoriesController()
@@ -17,14 +18,14 @@ def get_category_byID(id: int):
 def get_all_products_byCategoryID(id: int):
     return categories_ctl.get_all_products_byCategoryID(id)
 
-@router.post("/create")
+@router.post("/create", dependencies=[Depends(admin_verify)])
 def create_category(category: CategoryCreateDTO):
     return categories_ctl.create_category(category)
 
-@router.put("/update/{id}")
+@router.put("/update/{id}", dependencies=[Depends(admin_verify)])
 def update_category(id: int, category: CategoryCreateDTO):
     return categories_ctl.update_category(id, category)
 
-@router.delete("/delete/{id}")
+@router.delete("/delete/{id}", dependencies=[Depends(admin_verify)])
 def delete_category(id: int):
     return categories_ctl.delete_category(id)
