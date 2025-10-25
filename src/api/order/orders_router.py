@@ -7,17 +7,14 @@ router = APIRouter(prefix="/orders", tags=["Orders"])
 
 orders_ctl = OrdersController()
 
-# ✅ Chỉ admin được phép xem tất cả order
 @router.get("/", dependencies=[Depends(admin_verify)])
 def get_all_orders(Page: int = 1):
     return orders_ctl.get_all_orders(Page)
 
-# ✅ Chỉ admin được phép xem chi tiết order
 @router.get("/{id}", dependencies=[Depends(admin_verify)])
 def get_order_details(id: int):
     return orders_ctl.get_order_details(id)
 
-# ✅ Chỉ user (đăng nhập) mới được tạo order
 @router.post("/", dependencies=[],)
 def create_order(order: NewOrder, user=Depends(user_verify)):
     return orders_ctl.create_order(order, user)
