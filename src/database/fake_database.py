@@ -132,7 +132,6 @@ for product in tqdm(products):
             product_name,
             1,  # UserID=1 (Admin)
             admin_user["UserName"],
-            admin_user["Email"],
             quantity,
             datetime.now()
         ))
@@ -143,76 +142,10 @@ cursor.executemany("""
 """, inventory_data)
 
 cursor.executemany("""
-    INSERT INTO Inventory_Logs (ProductID, ProductName, UserID, UserName, Email, Quantity, DateChange)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO Inventory_Logs (ProductID, ProductName, UserID, UserName, Quantity, DateChange)
+    VALUES (?, ?, ?, ?, ?, ?)
 """, inventory_logs)
 conn.commit()
-
-# # =========================
-# # Orders & Order_Details
-# # =========================
-# print("Inserting Orders and Order Details...")
-# order_data = []
-# order_details_data = []
-
-# num_orders = 5000
-
-# for _ in tqdm(range(num_orders)):
-#     # Random User
-#     user = random.choice(users)
-#     order_price = 0
-
-#     # Tạo Order
-#     order_data.append((
-#         user.UserID,
-#         user.UserName,
-#         user.Address,
-#         user.PhoneNumber,
-#         0,  # tạm thời, sẽ update sau
-#         datetime.now()
-#     ))
-
-# cursor.executemany("""
-#     INSERT INTO Orders (UserID, UserName, Address, PhoneNumber, Price, OrderDate)
-#     VALUES (?, ?, ?, ?, ?, ?)
-# """, order_data)
-# conn.commit()
-
-# # Lấy OrderID vừa insert
-# cursor.execute("SELECT OrderID, UserID FROM Orders")
-# orders = cursor.fetchall()
-
-# # Tạo Order Details
-# for order in tqdm(orders):
-#     order_id = order.OrderID
-#     num_items = random.randint(1, 5)
-#     total_price = 0
-
-#     products_sample = random.sample(products, num_items)
-#     for product in products_sample:
-#         product_id = product.ProductID
-#         product_name = product.ProductName
-#         quantity = random.randint(1, 10)
-#         unit_price = random.randint(10, 200) * 1000
-#         total_price += quantity * unit_price
-
-#         order_details_data.append((
-#             order_id,
-#             product_id,
-#             product_name,
-#             quantity,
-#             unit_price
-#         ))
-
-#     # Update Order Price
-#     cursor.execute("UPDATE Orders SET Price=? WHERE OrderID=?", (total_price, order_id))
-
-# cursor.executemany("""
-#     INSERT INTO Order_Details (OrderID, ProductID, ProductName, Quantity, Unit_price)
-#     VALUES (?, ?, ?, ?, ?)
-# """, order_details_data)
-# conn.commit()
-
 print("✅ Done inserting all fake data!")
 
 cursor.close()

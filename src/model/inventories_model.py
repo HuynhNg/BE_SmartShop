@@ -29,6 +29,32 @@ class Inventories_model():
             cursor.close()
             conn.close()
     
+    @staticmethod
+    def get_inventory_byProductID(id: int):
+        try:
+            conn = get_connection()
+            cursor = conn.cursor()
+
+            cursor.execute("SELECT * FROM Inventories WHERE ProductID = ?", (id,))
+            row = cursor.fetchone()
+            if row:
+                inventory = InventoryDTO(
+                    ProductID= row[1],
+                    Quantity= row[3]
+                )
+                return inventory
+            return None
+
+        except Exception as e:
+            raise e
+
+        finally:
+            if cursor:
+                cursor.close()
+            if conn:
+                conn.close()
+ 
+    
 class InventoryLog_model():
     @staticmethod
     def create_log(log: InventoryLogDTO):

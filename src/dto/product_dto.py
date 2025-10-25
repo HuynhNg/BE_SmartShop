@@ -22,3 +22,9 @@ class ProductResponseDTO(BaseModel):
     Category: str
     Price: int
     isActive: bool
+
+class ProductOrder(BaseModel):
+    ProductID: int
+    ProductName: str
+    Quantity: int
+    Unit_price: int
