@@ -47,14 +47,6 @@ Cài đặt tất cả package từ file `requirements.txt`:
 pip install -r requirements.txt
 ```
 
-Nếu bạn chưa có file này, tạo bằng lệnh:
-
-```bash
-pip freeze > requirements.txt
-```
-
----
-
 ## ▶️ Chạy ứng dụng
 
 ### 🔹 Bước 4: Tạo thư mục log (nếu chưa có)
