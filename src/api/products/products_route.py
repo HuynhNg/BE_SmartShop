@@ -15,14 +15,14 @@ def get_all_products(page: int = 1):
 def get_product_byID(id: int):
     return products_ctl.get_product_byID(id)
 
-@router.post("/create", dependencies=[Depends(admin_verify)])
+@router.post("/", dependencies=[Depends(admin_verify)])
 def create_product(Product: ProductCreateDTO):
     return products_ctl.create_product(Product)
 
-@router.put("/update", dependencies=[Depends(admin_verify)])
+@router.put("/", dependencies=[Depends(admin_verify)])
 def update_product(product: Product):
     return products_ctl.update_product(product)
 
-@router.delete("/delete/{id}", dependencies=[Depends(admin_verify)])
+@router.delete("/{id}", dependencies=[Depends(admin_verify)])
 def delete_product(id: int):
     return products_ctl.delete_product(id)
