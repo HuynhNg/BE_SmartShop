@@ -163,3 +163,46 @@ class Users_model:
                 cursor.close()
             if conn:
                 conn.close()
+
+
+    @staticmethod
+    def update_user(user_id: int, user : RegisterDTO):
+        conn = None
+        cursor = None
+        try:
+            conn = get_connection()
+            conn.autocommit = False  
+            cursor = conn.cursor()
+            old_user = Users_model.get_user_byID(user_id)
+
+            query = """
+                Update Users
+                Set UserName = ?, PhoneNumber = ?, Address = ?, Email = ?, Password = ?
+                where UserID = ?
+            """
+            cursor.execute(query, (user.UserName, user.PhoneNumber, user.Address, user.Email, user.Password, user_id))
+            
+            if old_user.UserName != user.UserName:
+                query_update_order = """
+                    Update Orders
+                    Set UserName = ?
+                    where UserID = ? and UserName = ?
+                """
+
+                query_update_log = """
+                    Update Inventory_Logs
+                    Set UserName = ?
+                    where UserID = ? and UserName = ?
+                """
+                cursor.execute(query_update_order, (user.UserName, user_id, old_user.UserName))
+                cursor.execute(query_update_log, (user.UserName, user_id, old_user.UserName))
+                conn.commit()
+        except Exception as e:
+            if conn:
+                conn.rollback()
+            raise e
+        finally:
+            if cursor:
+                cursor.close()
+            if conn:
+                conn.close()
