@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: smartshop_redis
+    ports:
+      - "6379:6379"
+    restart: always
+
+  backend:
+    build: .
+    container_name: smartshop_backend
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      - REDIS_URL=redis://smartshop_redis:6379  # 🔹 ép backend kết nối đúng Redis container
+      - SQLSERVER_HOST=host.docker.internal     # 🔹 nếu bạn dùng SQL Server cài trên Windows
+    depends_on:
+      - redis
+    volumes:
+      - .:/app  # Hot reload khi dev
+    command: uvicorn index:app --host 0.0.0.0 --port 8080 --reload

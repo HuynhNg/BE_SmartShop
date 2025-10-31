@@ -2,11 +2,13 @@ from fastapi import APIRouter, Depends
 from src.middlewares.verify_middleware import admin_verify, user_verify 
 from src.api.users.users_controller import UsersController
 from src.dto.user_dto import RegisterDTO
+from fastapi_cache.decorator import cache
 
 router = APIRouter(prefix="/users", tags=["Users"])
 users_ctl = UsersController()
 
 @router.get("/", dependencies=[Depends(admin_verify)])
+@cache(expire=300)
 def get_all_users(Page: int = 1):
     return users_ctl.get_all_users(Page)
 
