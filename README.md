@@ -19,7 +19,7 @@
 ### 🔹 Bước 1: Clone hoặc tải mã nguồn
 
 ```bash
-git clone https://github.com/your-username/BE_SmartShop.git
+git clone https://github.com/HuynhNg/BE_SmartShop.git
 cd BE_SmartShop
 ```
 
