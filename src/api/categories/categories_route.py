@@ -2,11 +2,13 @@ from fastapi import APIRouter,  Depends
 from src.api.categories.categories_controller import CategoriesController
 from src.dto.category_dto import CategoryCreateDTO
 from src.middlewares.verify_middleware import admin_verify
+from fastapi_cache.decorator import cache
 
 router = APIRouter(prefix="/categories", tags=["Categories"])
 categories_ctl = CategoriesController()
 
 @router.get("/")
+@cache(expire=300)
 def get_all_categories():
     return categories_ctl.get_all_categories()
 
@@ -15,6 +17,7 @@ def get_category_byID(id: int):
     return categories_ctl.get_category_byID(id)
 
 @router.get("/{id}/Products")
+@cache(expire=300)
 def get_all_products_byCategoryID(id: int):
     return categories_ctl.get_all_products_byCategoryID(id)
 

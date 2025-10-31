@@ -2,12 +2,14 @@ from fastapi import APIRouter, Depends
 from src.dto.product_dto import ProductCreateDTO, Product
 from src.middlewares.verify_middleware import admin_verify
 from src.api.products.products_controller import ProductsController
+from fastapi_cache.decorator import cache
 
 router = APIRouter(prefix="/products", tags=["Products"])
 
 products_ctl = ProductsController()
 
 @router.get("/")
+@cache(expire=300)
 def get_all_products(page: int = 1):
     return products_ctl.get_all_products(page)
     
