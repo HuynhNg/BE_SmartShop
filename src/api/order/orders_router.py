@@ -1,13 +1,15 @@
 from fastapi import APIRouter, Depends
 from src.dto.order_dto import Order, OrderDetail, NewOrder, NewOrderDetail
 from src.api.order.orders_controller import OrdersController
-from src.middlewares.verify_middleware import admin_verify, user_verify 
+from src.middlewares.verify_middleware import admin_verify, user_verify
+from fastapi_cache.decorator import cache 
 
 router = APIRouter(prefix="/orders", tags=["Orders"])
 
 orders_ctl = OrdersController()
 
 @router.get("/", dependencies=[Depends(admin_verify)])
+@cache(expire=300)
 def get_all_orders(Page: int = 1):
     return orders_ctl.get_all_orders(Page)
 
