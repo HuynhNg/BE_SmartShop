@@ -7,9 +7,9 @@ from src.dto.product_dto import ProductCreateDTO, Product
 from src.dto.inventory_dto import InventoryDTO, InventoryLogDTO
 
 class ProductsService():
-    def get_all_products(self,page: int):
+    def get_all_products(self,page: int, size: int = 20, sort_order: int = None):
         try:
-            products = Products_model.get_all_products(page)
+            products = Products_model.get_all_products(page, size, sort_order)
             return products
         except Exception as e:
             raise e

@@ -4,10 +4,10 @@ from fastapi.responses import JSONResponse
 from src.dto.product_dto import ProductResponseDTO, ProductCreateDTO, Product
 from src.model.categories_model import Categories_model
 class ProductsController():
-    def get_all_products(self,page: int ):
+    def get_all_products(self,page: int, size: int = 20, sort_order: int = None ):
         try:
             products_sv = ProductsService()
-            products = products_sv.get_all_products(page)
+            products = products_sv.get_all_products(page, size, sort_order)
             return JSONResponse(
                 content={
                     "message": "Products retrieved successfully",

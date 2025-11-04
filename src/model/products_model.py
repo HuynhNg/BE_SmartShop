@@ -8,12 +8,22 @@ from datetime import datetime
 
 class Products_model():
     @staticmethod
-    def get_all_products(page: int):
+    def get_all_products(page: int, size: int = 20, sort_order: int = None):
         try:
             conn = get_connection()
             cursor = conn.cursor()
+            start = (page - 1) * size
 
-            cursor.execute("""
+            # Xác định hướng sắp xếp theo yêu cầu
+            if sort_order == 1:
+                order_clause = "ORDER BY p.isActive ASC"
+            elif sort_order == 2:
+                order_clause = ""  # Không sắp xếp
+            else:
+                order_clause = "ORDER BY p.isActive DESC"
+
+            # Ghép câu truy vấn
+            query = f"""
                 SELECT 
                     p.ProductID, 
                     p.ProductName, 
@@ -22,23 +32,26 @@ class Products_model():
                     p.isActive
                 FROM Products p
                 JOIN Categories c ON p.CategoryID = c.CategoryID
-                ORDER BY p.ProductID
-                OFFSET ? ROWS FETCH NEXT 20 ROWS ONLY
-            """, ((page - 1) * 20,))
+                {order_clause}
+                OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+            """
 
+            cursor.execute(query, (start, size))
             rows = cursor.fetchall()
-            products = []
 
-            for row in rows:
-                products.append(ProductResponseDTO(
+            products = [
+                ProductResponseDTO(
                     ProductID=row[0],
                     ProductName=row[1],
                     Category=row[2],
                     Price=int(row[3]),
                     isActive=bool(row[4])
-                ))
+                )
+                for row in rows
+            ]
 
             return products
+
         except Exception as e:
             raise e
 
