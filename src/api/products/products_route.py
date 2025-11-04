@@ -9,6 +9,7 @@ router = APIRouter(prefix="/products", tags=["Products"])
 products_ctl = ProductsController()
 
 @router.get("/")
+@cache(expire=300)
 def get_all_products(page: int = 1, size: int = 20, sort_order: int = None):
     return products_ctl.get_all_products(page, size, sort_order)
     

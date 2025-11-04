@@ -18,7 +18,7 @@ class Products_model():
             if sort_order == 1:
                 order_clause = "ORDER BY p.isActive ASC"
             elif sort_order == 2:
-                order_clause = ""  # Không sắp xếp
+                order_clause = "ORDER BY p.ProductID"  
             else:
                 order_clause = "ORDER BY p.isActive DESC"
 
